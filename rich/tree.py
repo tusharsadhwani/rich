@@ -35,6 +35,7 @@ class Tree(JupyterMixin):
         self.children: List[Tree] = []
         self.expanded = expanded
         self.highlight = highlight
+        self._arrows = False
 
     def add(
         self,
@@ -42,6 +43,7 @@ class Tree(JupyterMixin):
         *,
         style: Optional[StyleType] = None,
         guide_style: Optional[StyleType] = None,
+        arrows: bool = False,
         expanded: bool = True,
         highlight: bool = False,
     ) -> "Tree":
@@ -79,13 +81,13 @@ class Tree(JupyterMixin):
         get_style = console.get_style
         null_style = Style.null()
         guide_style = get_style(self.guide_style, default="") or null_style
-        SPACE, CONTINUE, FORK, END = range(4)
+        SPACE, CONTINUE, FORK, FORKARROW, END, ENDARROW = range(6)
 
-        ASCII_GUIDES = ("    ", "|   ", "+-- ", "`-- ")
+        ASCII_GUIDES = ("    ", "|   ", "+-- ", "`-- ", "+-> ", "`-> ")
         TREE_GUIDES = [
-            ("    ", "│   ", "├── ", "└── "),
-            ("    ", "┃   ", "┣━━ ", "┗━━ "),
-            ("    ", "║   ", "╠══ ", "╚══ "),
+            ("    ", "│   ", "├── ", "├─🞂 ", "└── ", "└─🞂 "),
+            ("    ", "┃   ", "┣━━ ", "┣━🞂 ", "┗━━ ", "┗━🞂 "),
+            ("    ", "║   ", "╠══ ", "╠═🞂 ", "╚══ ", "╚═🞂 "),
         ]
         _Segment = Segment
 
